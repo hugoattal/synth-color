@@ -1,18 +1,20 @@
 import { TLabColor, TXyzColor } from "../../types";
 
 // D65
-const xn = 95.0489, yn = 100, zn = 108.8840;
+const white: TXyzColor = {
+    x: 95.0489,
+    y: 100,
+    z: 108.8840
+};
 
 // D 50
 //const xn = 96.4212, yn = 100, zn = 82.5188;
 
-export function XYZtoLAB(input: TXyzColor) {
-    const x = input.x, y = input.y, z = input.z;
-
+export function XYZtoLAB(xyz: TXyzColor) {
     return {
-        l: 116 * f(y / yn) - 16,
-        a: 500 * (f(x / xn) - f(y / yn)),
-        b: 200 * (f(y / yn) - f(z / zn))
+        l: 116 * f(xyz.y / white.y) - 16,
+        a: 500 * (f(xyz.x / white.x) - f(xyz.y / white.y)),
+        b: 200 * (f(xyz.y / white.y) - f(xyz.z / white.z))
     } as TLabColor;
 
     function f(t) {
@@ -26,13 +28,11 @@ export function XYZtoLAB(input: TXyzColor) {
     }
 }
 
-export function LABtoXYZ(input: TLabColor) {
-    const l = input.l, a = input.a, b = input.b;
-
+export function LABtoXYZ(lab: TLabColor) {
     return {
-        x: xn * f((l + 16) / 116 + a / 500),
-        y: yn * f((l + 16) / 116),
-        z: zn * f((l + 16) / 116 - b / 200)
+        x: white.x * f((lab.l + 16) / 116 + lab.a / 500),
+        y: white.y * f((lab.l + 16) / 116),
+        z: white.z * f((lab.l + 16) / 116 - lab.b / 200)
     } as TXyzColor;
 
     function f(t) {

@@ -8,6 +8,7 @@ export function getColorProxy(target: SColor, internal: TColorInternal) {
                 const model = colorMatch[1] as keyof TModels;
                 const alpha = colorMatch[2];
 
+                target.computeModel(model);
                 const output: Record<string, number> = internal.models[colorMatch[1]].value;
                 if (alpha) {
                     output.alpha = internal.alpha;

@@ -1,5 +1,6 @@
 import { TRgbColor, TXyzColor } from "../../types";
 import { Matrix } from "../../class/SMatrix";
+import { sanitizeRGB } from "../sanitizers";
 
 export function RGBtoXYZ(input: TRgbColor) {
     const matrix = new Matrix([
@@ -29,11 +30,11 @@ export function XYZtoRGB(input: TXyzColor) {
 
     const { X: r, Y: g, Z: b } = matrix.multiply([input.x, input.y, input.z]);
 
-    return {
+    return sanitizeRGB({
         r: pivotRgb(r),
         g: pivotRgb(g),
         b: pivotRgb(b)
-    } as TRgbColor;
+    });
 
     function pivotRgb(n) {
         n /= 100;

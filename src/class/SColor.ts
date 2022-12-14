@@ -1,6 +1,11 @@
 import { SValue } from "./SValue";
 import { THslColor, THsvColor, TLabColor, TLuvColor, TRgbColor, TXyzColor } from "../types";
 import { getColorProxy } from "../lib/colorProxy";
+import { LABtoXYZ, XYZtoLAB } from "../lib/converters/lab";
+import { LUVtoXYZ, XYZtoLUV } from "../lib/converters/luv";
+import { RGBtoXYZ, XYZtoRGB } from "../lib/converters/xyz";
+import { HSLtoRGB, RGBtoHSL } from "../lib/converters/hsl";
+import { HSVtoRGB, RGBtoHSV } from "../lib/converters/hsv";
 
 export type TModels = {
     rgb: TRgbColor;
@@ -44,10 +49,6 @@ export class SColor {
     xyza: TXyzColor & { alpha: number };
 
     setModel<T extends keyof TModels>(modelKey: T, value: TModels[T]) {
-        for (const model of Object.values(this.internal.models)) {
-            model.invalidate();
-        }
-
         if (!this.internal.models[modelKey]) {
             this.internal.models[modelKey] = new SValue<TModels[T]>(value) as any;
         }
@@ -102,6 +103,8 @@ export class SColor {
             });
         }
 
+        this.updateModel("rgb");
+
         if (hex.length === 8) {
             this.internal.alpha = parseInt(hex[6] + hex[7], 16) / 255;
         }
@@ -120,24 +123,28 @@ export class SColor {
     }
 
     get rgbString() {
-        return this.getString("rgb");
-    }
+        this.computeModel("rgb");
 
-    get hslString() {
-        return this.getString("hsl");
-    }
-
-    getString(modelKey: keyof TModels) {
-        this.computeModel(modelKey);
-
-        let string = modelKey;
+        let string = "rgb";
         string += this.internal.alpha < 1 ? "a" : "";
         string += "(";
-        string += Object.values(this.internal.models[modelKey].value).map(v => Math.round(v * 255)).join(",");
+        string += Object.values(this.internal.models.rgb.value).map(v => Math.round(v * 255)).join(",");
         string += this.internal.alpha < 1 ? "," + this.internal.alpha * 100 + "%" : "";
         string += ")";
         return string;
+    }
 
+    get hslString() {
+        this.computeModel("hsl");
+
+        let string = "hsl";
+        string += this.internal.alpha < 1 ? "a" : "";
+        string += "(" + this.internal.models.hsl.value.h + ","
+            + (this.internal.models.hsl.value.s * 100) + "%,"
+            + (this.internal.models.hsl.value.l * 100) + "%";
+        string += this.internal.alpha < 1 ? "," + this.internal.alpha * 100 + "%" : "";
+        string += ")";
+        return string;
     }
 
     parseRgbArray(value: Array<number>) {
@@ -147,6 +154,8 @@ export class SColor {
             b: value[2] / 255
         });
 
+
+        this.updateModel("rgb");
         this.setAlpha(value[3]);
     }
 
@@ -157,12 +166,55 @@ export class SColor {
             l: value[2] / 255
         });
 
+        this.updateModel("hsl");
         this.setAlpha(value[3]);
     }
 
     computeModel(modelKey: keyof TModels) {
         if (this.internal.models[modelKey]?.ready) {
             return;
+        }
+
+        switch (modelKey) {
+            case "lab":
+                this.computeModel("xyz");
+                this.setModel("lab", XYZtoLAB(this.internal.models.xyz.value))
+                break;
+            case "luv":
+                this.computeModel("xyz");
+                this.setModel("luv", XYZtoLUV(this.internal.models.xyz.value))
+                break;
+            case "xyz":
+                if (this.internal.models.lab?.ready) {
+                    this.setModel("xyz", LABtoXYZ(this.internal.models.lab.value))
+                    break;
+                }
+                if (this.internal.models.luv?.ready) {
+                    this.setModel("xyz", LUVtoXYZ(this.internal.models.luv.value))
+                    break;
+                }
+                this.computeModel("rgb");
+                this.setModel("xyz", RGBtoXYZ(this.internal.models.rgb.value))
+                break;
+            case "hsl":
+                this.computeModel("rgb");
+                this.setModel("hsl", RGBtoHSL(this.internal.models.rgb.value))
+                break;
+            case "hsv":
+                this.computeModel("rgb");
+                this.setModel("hsv", RGBtoHSV(this.internal.models.rgb.value))
+                break;
+            case "rgb":
+                if (this.internal.models.hsl?.ready) {
+                    this.setModel("rgb", HSLtoRGB(this.internal.models.hsl.value))
+                    break;
+                }
+                if (this.internal.models.hsv?.ready) {
+                    this.setModel("rgb", HSVtoRGB(this.internal.models.hsv.value))
+                    break;
+                }
+                this.computeModel("xyz");
+                this.setModel("rgb", XYZtoRGB(this.internal.models.xyz.value))
         }
     }
 
