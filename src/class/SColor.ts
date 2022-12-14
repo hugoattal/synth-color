@@ -227,6 +227,6 @@ export class SColor {
             return;
         }
 
-        this.internal.alpha = SMath.clamp(alpha / 255, 0, 1);
+        this.internal.alpha = SMath.clamp(alpha / 100, 0, 1);
     }
 }
