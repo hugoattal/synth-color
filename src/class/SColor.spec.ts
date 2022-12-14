@@ -16,13 +16,21 @@ describe("SColor", () => {
     it("should generate the rgb string", () => {
         const color = new SColor("#ff6600");
         expect(color.rgbString).toBe("rgb(255,102,0)");
-
-        console.log(color.hslString)
     });
     it("should generate other models", () => {
         const color = new SColor("hsl(300, 50%, 50%)");
         expect(color.hex).toBe("#bf40bf");
     });
+    it("test", () => {
+        const color = new SColor("hsl(230, 0%, 50%)");
+        color.luv.l = 53;
+        //console.log(color.hex);
+        const color2 = new SColor("hsl(60, 100%, 50%)");
+        console.log(color2.hex);
+        color2.luv.l = 50;
+        console.log(color2.hex);
+        const color3 = new SColor("hsl(230, 100%, 50%)");
+        color3.luv.l = 53;
+        //console.log(color3.hex);
+    });
 });
-
-const a = "hsl(300, 50%, 50%)"

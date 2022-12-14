@@ -1,6 +1,6 @@
 {
     "name": "synth-color",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "author": {
         "name": "Hugo Attal",
         "url": "https://twitter.com/HugoAttal"
@@ -24,6 +24,9 @@
         },
         "./*": "./*"
     },
+    "files": [
+        "dist/**"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/hugoattal/synth-color.git"
