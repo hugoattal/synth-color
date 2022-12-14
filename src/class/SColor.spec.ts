@@ -21,6 +21,12 @@ describe("SColor", () => {
         const color = new SColor("hsl(300, 50%, 50%)");
         expect(color.hex).toBe("#bf40bf");
     });
+    it("should update alpha", () => {
+        const color = new SColor("hsl(230, 50%, 50%)");
+        expect(color.hex).toBe("#4055bf");
+        color.alpha = 0.5;
+        expect(color.hex).toBe("#4055bf80");
+    });
     it("test", () => {
         const color = new SColor("hsl(230, 0%, 50%)");
         color.luv.l = 53;

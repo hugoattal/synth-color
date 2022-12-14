@@ -26,6 +26,7 @@ export function getColorProxy(target: SColor, internal: TColorInternal) {
         set(target: SColor, property: string, value: unknown): boolean {
             if (property === "alpha") {
                 target.setAlpha(value as number);
+                return true;
             }
 
             return false;
