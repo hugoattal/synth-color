@@ -20,8 +20,8 @@ export function XYZtoLUV(xyz: TXyzColor) {
     const targetDenominator = getDenXyz(xyz);
     const whiteDenominator = getDenXyz(white);
 
-    const up = 4 * xyz.x / targetDenominator;
-    const vp = 9 * xyz.y / targetDenominator;
+    const up = 4 * xyz.x / targetDenominator || 0;
+    const vp = 9 * xyz.y / targetDenominator || 0;
 
     const unp = 4 * white.x / whiteDenominator;
     const vnp = 9 * white.y / whiteDenominator;

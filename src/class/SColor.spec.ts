@@ -27,6 +27,11 @@ describe("SColor", () => {
         color.alpha = 0.5;
         expect(color.hex).toBe("#4055bf80");
     });
+    it("should work with black", () => {
+        const color = new SColor("#000000");
+        color.luv.l = 50;
+        expect(color.hex).toBe("#777777");
+    });
     it("test", () => {
         const color = new SColor("hsl(230, 0%, 50%)");
         color.luv.l = 53;
