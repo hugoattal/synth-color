@@ -1,6 +1,6 @@
 # synth-color
 
-Library for managing and manipulating colors, providing a variety of tools for working with color spaces and color models.
+Library for managing and manipulating colors in different color spaces and models.
 
 ## Installation
 
