@@ -14,12 +14,20 @@ export function getColorProxy(target: SColor, internal: TColorInternal) {
                     output.alpha = internal.alpha;
                 }
 
-                return getModelProxy(target, output, internal, {modelKey: model, alpha})
+                return getModelProxy(target, output, internal, { modelKey: model, alpha });
+            }
+
+            if (property === "alpha") {
+                return internal.alpha;
             }
 
             return target[property];
         },
         set(target: SColor, property: string, value: unknown): boolean {
+            if (property === "alpha") {
+                target.setAlpha(value as number);
+            }
+
             return false;
         }
     });
