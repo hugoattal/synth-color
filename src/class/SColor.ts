@@ -161,9 +161,9 @@ export class SColor {
 
     parseHslArray(value: Array<number>) {
         this.setModel("hsl", {
-            h: value[0] / 255,
-            s: value[1] / 255,
-            l: value[2] / 255
+            h: value[0],
+            s: value[1] / 100,
+            l: value[2] / 100
         });
 
         this.updateModel("hsl");

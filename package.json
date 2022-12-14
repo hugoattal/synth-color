@@ -2,7 +2,7 @@
     "name": "synth-color",
     "version": "1.0.0",
     "author": "Hugo Attal",
-    "description": "Library for managing and manipulating colors in JavaScript projects, providing a variety of tools for working with color spaces and color models.",
+    "description": "Library for managing and manipulating colors, providing a variety of tools for working with color spaces and color models.",
     "main": "./dist/index.umd.js",
     "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts",
