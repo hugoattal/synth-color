@@ -56,13 +56,13 @@ export function LUVtoXYZ(luv: TLuvColor) {
     const vp = luv.v / (13 * luv.l) + vnp;
 
     const denominator = getDenUv({ up, vp });
-    const xp = 9 * up / denominator;
-    const yp = 4 * vp / denominator;
+    const xp = 9 * up / denominator || 0;
+    const yp = 4 * vp / denominator || 0;
 
     return {
-        x: 100 * xp * y / yp,
+        x: 100 * xp * y / yp || 0,
         y: 100 * y,
-        z: 100 * (1 - xp - yp) * y / yp
+        z: 100 * (1 - xp - yp) * y / yp || 0
     } as TXyzColor;
 
     function f(t) {

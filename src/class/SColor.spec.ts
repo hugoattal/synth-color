@@ -34,18 +34,6 @@ describe("SColor", () => {
     });
     it("should work with transparency", () => {
         const color = new SColor("hsla(0, 0%, 100%, 80%)");
-        console.log(color.hex);
-    });
-    it("test", () => {
-        const color = new SColor("hsl(230, 0%, 50%)");
-        color.luv.l = 53;
-        //console.log(color.hex);
-        const color2 = new SColor("hsl(60, 100%, 50%)");
-        console.log(color2.hex);
-        color2.luv.l = 50;
-        console.log(color2.hex);
-        const color3 = new SColor("hsl(230, 100%, 50%)");
-        color3.luv.l = 53;
-        //console.log(color3.hex);
+        expect(color.hex).toBe("#ffffffcc");
     });
 });
