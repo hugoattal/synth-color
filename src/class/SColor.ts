@@ -70,6 +70,8 @@ export class SColor {
     }
 
     constructor(value: string) {
+        this.setModel("rgb", { r: 0, g: 0, b: 0 });
+
         if (value.startsWith("#")) {
             this.parseHex(value);
         }
