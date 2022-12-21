@@ -69,21 +69,37 @@ export class SColor {
         }
     }
 
-    constructor(value: string) {
+    constructor(value?: string | TRgbColor | THslColor | THsvColor) {
         this.setModel("rgb", { r: 0, g: 0, b: 0 });
 
-        if (value.startsWith("#")) {
-            this.parseHex(value);
+        if (!value) {
+            return getColorProxy(this, this.internal);
         }
 
-        if (value.startsWith("rgb")) {
-            const array = value.match(/rgba?\((.+)\)/)[1].split(",").map((v) => parseFloat(v));
-            this.parseRgbArray(array);
+        if (typeof value === "string") {
+            if (value.startsWith("#")) {
+                this.parseHex(value);
+            }
+            else if (value.startsWith("rgb")) {
+                const array = value.match(/rgba?\((.+)\)/)[1].split(",").map((v) => parseFloat(v));
+                this.parseRgbArray(array);
+            }
+            else if (value.startsWith("hsl")) {
+                const array = value.match(/hsla?\((.+)\)/)[1].split(",").map((v) => parseFloat(v));
+                this.parseHslArray(array);
+            }
+
+            return getColorProxy(this, this.internal);
         }
 
-        if (value.startsWith("hsl")) {
-            const array = value.match(/hsla?\((.+)\)/)[1].split(",").map((v) => parseFloat(v));
-            this.parseHslArray(array);
+        if ("r" in value && "g" in value && "b" in value) {
+            this.setModel("rgb", value);
+        }
+        else if ("h" in value && "s" in value && "l" in value) {
+            this.setModel("hsl", value);
+        }
+        else if ("h" in value && "s" in value && "v" in value) {
+            this.setModel("hsv", value);
         }
 
         return getColorProxy(this, this.internal);

@@ -34,12 +34,19 @@ describe("SColor", () => {
     });
     it("should work with transparency", () => {
         const color = new SColor("hsla(0, 0%, 100%, 80%)");
-        console.log(color.hex);
+        expect(color.hex).toBe("#ffffffcc");
     });
-    it("test", () => {
-        const color = new SColor("hsl(60, 100%, 50%)");
-        console.log(color.hex);
-        color.luv.l = 50;
-        console.log(color.hex);
+    it("should work with no argument", () => {
+        const color = new SColor();
+        expect(color.hex).toBe("#000000");
+    });
+    it("should work with rgb arguments", () => {
+        const color = new SColor({r: 0.5, g:0.5, b:0.5});
+        expect(color.hex).toBe("#808080");
+    });
+    it("should update rgb via proxy", () => {
+        const color = new SColor();
+        color.rgb = {r: 0.5, g:0.5, b:0.5};
+        expect(color.hex).toBe("#808080");
     });
 });

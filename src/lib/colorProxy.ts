@@ -1,9 +1,11 @@
 import { SColor, TColorInternal, TModels } from "../class/SColor";
 
+const colorMatcher = /^(rgb|lab|hsl|hsv|luv|xyz)(a?)$/;
+
 export function getColorProxy(target: SColor, internal: TColorInternal) {
     return new Proxy(target, {
         get(target: SColor, property: string): any {
-            const colorMatch = property.match(/^(rgb|lab|hsl|hsv|luv|xyz)(a?)$/);
+            const colorMatch = property.match(colorMatcher);
             if (colorMatch) {
                 const model = colorMatch[1] as keyof TModels;
                 const alpha = colorMatch[2];
@@ -26,6 +28,25 @@ export function getColorProxy(target: SColor, internal: TColorInternal) {
         set(target: SColor, property: string, value: unknown): boolean {
             if (property === "alpha") {
                 target.setAlpha(value as number);
+                return true;
+            }
+
+            if (property === "hex") {
+                target.parseHex(value as string);
+                return true;
+            }
+
+            const colorMatch = property.match(colorMatcher);
+            if (colorMatch) {
+                const model = colorMatch[1] as keyof TModels;
+                const alpha = colorMatch[2];
+
+                target.setModel(model, value as any);
+
+                if (alpha) {
+                    target.setAlpha((value as { a: number }).a);
+                }
+
                 return true;
             }
 
