@@ -51,8 +51,8 @@ describe("SColor", () => {
     });
     it("should update rgb via proxy", () => {
         const color = new SColor();
-        color.hsva = {h: 240, s:1, v:1, alpha: 1};
-        expect(color.hex).toBe("#0000ff");
+        color.hsva = {h: 240, s:1, v:1, alpha: 0.5};
+        expect(color.hex).toBe("#0000ff80");
     });
     it("should update hex", () => {
         const color = new SColor();
