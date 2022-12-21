@@ -129,6 +129,9 @@ export class SColor {
         if (hex.length === 8) {
             this.internal.alpha = parseInt(hex[6] + hex[7], 16) / 255;
         }
+        else {
+            this.internal.alpha = 1;
+        }
     }
 
     get hex() {
