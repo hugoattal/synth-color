@@ -42,6 +42,7 @@ export function getColorProxy(target: SColor, internal: TColorInternal) {
                 const alpha = colorMatch[2];
 
                 target.setModel(model, value as any);
+                target.updateModel(model);
 
                 if (alpha) {
                     target.setAlpha((value as { a: number }).a);
