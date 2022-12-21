@@ -143,6 +143,8 @@ export class SColor {
         return hex;
     }
 
+    set hex(value:string) {}
+
     get rgbString() {
         this.computeModel("rgb");
 

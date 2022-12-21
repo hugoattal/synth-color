@@ -54,4 +54,9 @@ describe("SColor", () => {
         color.hsva = {h: 240, s:1, v:1, alpha: 1};
         expect(color.hex).toBe("#0000ff");
     });
+    it("should update hex", () => {
+        const color = new SColor();
+        color.hex = "#ff6600"
+        expect(color.hex).toBe("#ff6600");
+    });
 });
